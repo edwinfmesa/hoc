@@ -177,7 +177,7 @@ s = t2
 print s
 
 lexico.input(s)
-print "\n\n --------------------RETURN------------------------\n\n"
+print "\n--------------------Lexer retorna------------------------\n\n"
 # try:
 while True:
    tokenizer = lexico.token()
