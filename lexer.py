@@ -8,7 +8,7 @@ keywords= {
     'read':'READ',
     'proc':'PROC',
     'procedure':'PROCEDURE',
-    'fun':'FUN',
+    'func':'FUNC',
     'function':'FUNCTION',
     'return':'RETURN',
     'for':'FOR',
@@ -46,6 +46,8 @@ bltn = {
 }
 
 tokens = [
+   'STRING',
+   'COMMENT',
    'FLOAT', 
    'NUMBER',
    'ID',
@@ -77,8 +79,10 @@ tokens = [
    'EXP',
    'LPARENT',
    'RPARENT',
-   
-
+   'LBRACKET',
+   'RBRACKET',
+   'COMMA',
+   'SEMICOLON'
 ] 
 
 tokens += keywords.values() + constants.values() + bltn.values()
@@ -110,15 +114,27 @@ t_DOLLAR = r'\$'
 t_EXP = r'\^'
 t_LPARENT = r'\('
 t_RPARENT = r'\)'
+t_LBRACKET = r'{'
+t_RBRACKET = r'}'
+t_COMMA = r','
+t_SEMICOLON = r';'
 
-t_ignore = '\t\n\" "'
-# Error handling rule
+
+
+
+
+
+def t_STRING(t):
+    r'\"([^\\^\n] |(\\.))*\"'
+    return t
+
 def t_error(t):
-    print "Illegal character '%s'" % t.value[0]
+    print ("Illegal character ",  t.value[0], "Line ", t.lineno)
     t.lexer.skip(1)
+    
 
 def t_FLOAT(t):
-    r'[0-9]+\.[0-9]+'
+    r'[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?'
     t.value = float(t.value)
     return t
 
@@ -127,23 +143,27 @@ def t_NUMBER(t):
     t.value = int(t.value)
     return t
 
-
-
-# def t_newline(t):
-#     r'\n+'
-#     t.lexer.lineno += len(t.value)
     
 def t_ID(t):
-   r'[a-zA-Z_][a-zA-Z0-9_]*'
-   if t.value in keywords:
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    if t.value in keywords:
       t.type=keywords[t.value]
-   elif  t.value in constants: 
+    elif  t.value in constants: 
       t.type=constants[t.value]
-   elif t.value in bltn:
+    elif t.value in bltn:
       t.type=bltn[t.value]
-   return t
+    return t
 
-    
+def t_error_STRING(t):
+    r'\".*'
+    print ("Error: with string: ", t.value, " Line: ", t.lineno)
+    t.lexer.skip(1)
+
+def t_COMMENT(t):
+    r'[##].*'
+    return t
+
+t_ignore = '\t\n '
 
 lexico = lex.lex()
 
@@ -173,20 +193,99 @@ cos(0)
 3E
 """
 
-s = t2
-print s
+t3="""
+4.5
+3
+565.999
+-34
+-344.44
+4E
+5E1
+5E6
+6E-5
+-3E-4
+"""
 
-lexico.input(s)
+t4="""
+3+4-8+2/4*8
+4+1+2*PHI
+print (7-8-1)+E
+tan(PI/3)+cos(2*pi)
+"""
+
+t5="""
+while (read(x)) {
+     print "Prueba de modulo ", x%40000
+} 
+## esto es un comentario en hoc
+hola
+"esto es un error 
+@
+"""
+
+t6='''
+proc squares(){ 
+    local i, j, k 
+    for (i=1; i <= $1; i=i+1){ 
+        print i*i 
+    }
+} 
+'''
+
+t7="""
+func reciduous(){
+    if ($1 ==$2) {
+       return 1
+    } else {
+      return $1/$2
+    } 
+} 
+"""
+t8="""
+func cuadrado(){
+    if ($1 ==0) {
+       return 1
+    } else {
+      return $1*$1
+    } 
+} 
+"""
+t9="""
+func factorial(){
+    if ($1 ==0) {
+       return 1
+    } else {
+        while ($1 >0){
+            $2 += $1
+        }
+        $1= $1-1
+        return $2
+    } 
+} 
+"""
+t10="""
+func igual(){
+    if ($1 ==$2) {
+        return 1
+    } else {
+        return 0
+    } 
+} 
+igual(3,3)
+"""
+
+test = t10
+print test
+
+lexico.input(test)
+
 print "\n--------------------Lexer retorna------------------------\n\n"
-# try:
+
 while True:
    tokenizer = lexico.token()
    if not tokenizer: break
    print tokenizer
-# except:
-#     print "Unknown ERROR"
-# print("\n Please press any key... ")
-# wait()
+
     
     
     
