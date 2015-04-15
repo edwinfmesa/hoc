@@ -55,6 +55,9 @@ def p_stmt_return(p):
 def p_stmt_return_expr(p):
     "stmt : RETURN expr"
 
+def p_stmt_proc(p):
+    "stmt : PROCEDURE begin LPARENT arglist RPARENT"
+
 def p_stmt_print(p):
     "stmt : PRINT prlist"
 
@@ -186,10 +189,10 @@ def p_prlist_comma_str(p):
 # ---------------------------------------------------------
 
 def p_defn_func(p):
-    "defn : FUNC procname"
+    "defn : FUNC procname LPARENT formals RPARENT"
 
 def p_defn_proc(p):
-    "defn : PROC procname"
+    "defn : PROC procname LPARENT formals RPARENT"
 
 # -----------------------------------------------------------
 

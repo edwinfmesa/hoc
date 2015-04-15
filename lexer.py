@@ -275,10 +275,10 @@ func igual(){
 igual(3,3)
 """
 
-test = t1
+# test = t1
 # print test
 
-lexico.input(test)
+# lexico.input(test)
 
 # print "\n--------------------Lexer retorna------------------------\n\n"
 
@@ -287,16 +287,6 @@ lexico.input(test)
 #    if not tokenizer: break
 #    print tokenizer
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
