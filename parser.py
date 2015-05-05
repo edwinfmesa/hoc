@@ -18,8 +18,8 @@ def p_list_defn(p):
     "list : list defn NEWLINE"
     pass
 
-def p_list_asgn(p):
-    " list : list asgn NEWLINE "
+# def p_list_asgn(p):
+#     " list : list asgn NEWLINE "
     pass
 
 def p_list_stmt(p):
@@ -133,7 +133,7 @@ def p_data_float(p):
     pass
 
 def p_data_constant(p):
-    "data : CONSTANT"
+    "data : constant"
     pass
 
 def p_data_id(p):
@@ -144,7 +144,7 @@ def p_data_id(p):
 
 
 def p_unaryop_munit(p):
-    "unaryop : MINUS expr "
+    "unaryop : UNARYMINUS expr "
     pass
 
 def p_unaryop_inc(p):
@@ -267,7 +267,7 @@ def p_expr_eq(p):
     pass
 
 def p_expr_ne(p):
-    'logicop : expr NE expr'
+    'logicop : expr NE expr '
     pass
     
 def p_expr_or(p):
@@ -285,7 +285,7 @@ def p_logicop_not(p):
 # ---------------callfunc ---------------------------
 
 def p_callfunc_bltn(p):
-    "callfunc : BLTIN LPARENT expr RPARENT"
+    "callfunc : bltin LPARENT expr RPARENT"
     pass
 
 def p_callfunc_func(p):
@@ -344,7 +344,7 @@ def p_procname_proc(p):
     pass
 
 def p_procname_bltin(p):
-    "procname : BLTIN"
+    "procname : bltin"
     pass
 
 # ------------------------------------------------
@@ -376,7 +376,61 @@ def p_error(p):
     else:
          print("Syntax error at EOF")
 
-# -------------------------------------------------------
+# -----------------bltin--------------------------------------
+
+def p_bltin(p):
+    """
+    bltin : SIN 
+        | COS 
+        | TAN 
+        | ASIN 
+        | ACOS 
+        | ATAN 
+        | SINH 
+        | COSH 
+        | TANH 
+        | INT 
+        | LOG 
+        | LOG10 
+        | SQRT 
+        | ABS 
+        | ERF 
+        | ERFC
+    """
+    pass
+
+
+# ------------------- constants ---------------------------------
+
+def p_constant(p):
+    """
+    constant : PI
+        | PHI
+        | GAMMA
+        | E
+        | DEG
+        | PREC
+    """
+
+
+# --------------------------------------------------------------
+
+precedence = (
+    ('right', 'ASSIGN', 'ADDEQ', 'SUBEQ', 'MULEQ', 'DIVEQ', 'MODEQ'),
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'GT','GE','LT','LE','EQ','NE'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE','MOD'),
+    ('left', 'UNARYMINUS','NOT','INC','DEC'),
+    ('left', 'EXP'),
+    ('left','SIN'),
+    ('left', 'LPARENT')
+
+)
+
+# ----------------------------------------------
+
 
 # Build the parser
 parser = yacc.yacc()

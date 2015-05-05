@@ -18,31 +18,31 @@ keywords= {
 }
 
 constants = {
-    'PI':'CONSTANT',
-    'PHI':'CONSTANT',
-    'GAMMA':'CONSTANT',
-    'E':'CONSTANT',
-    'DEG':'CONSTANT',
-    'PREC':'CONSTANT'
+    'PI':'PI',
+    'PHI':'PHI',
+    'GAMMA':'GAMMA',
+    'E':'E',
+    'DEG':'DEG',
+    'PREC':'PREC'
 }
 
 bltin = {
-    'sin':'BLTIN',
-    'cos':'BLTIN',
-    'tan':'BLTIN',
-    'asin':'BLTIN',
-    'acos':'BLTIN',
-    'atan':'BLTIN',
-    'sinh':'BLTIN',
-    'cosh':'BLTIN',
-    'tanh':'BLTIN',
-    'int':'BLTIN',
-    'log':'BLTIN',
-    'log10':'BLTIN',
-    'sqrt':'BLTIN',
-    'abs':'BLTIN',
-    'erf':'BLTIN',
-    'erfc':'BLTIN',
+    'sin':'SIN',
+    'cos':'COS',
+    'tan':'TAN',
+    'asin':'ASIN',
+    'acos':'ACOS',
+    'atan':'ATAN',
+    'sinh':'SINH',
+    'cosh':'COSH',
+    'tanh':'TANH',
+    'int':'INT',
+    'log':'LOG',
+    'log10':'LOG10',
+    'sqrt':'SQRT',
+    'abs':'ABS',
+    'erf':'ERF',
+    'erfc':'ERFC',
 
 }
 
@@ -84,7 +84,8 @@ tokens = [
    'RBRACKET',
    'COMMA',
    'SEMICOLON',
-   'NEWLINE'
+   'NEWLINE',
+   'UNARYMINUS'
 ] 
 
 tokens += keywords.values() + constants.values() + bltin.values()
@@ -121,6 +122,7 @@ t_RBRACKET = r'}'
 t_COMMA = r','
 t_SEMICOLON = r';'
 t_NEWLINE = r'\n'
+t_UNARYMINUS = r'\-'
 
 
 
@@ -163,10 +165,10 @@ def t_error_STRING(t):
     t.lexer.skip(1)
 
 def t_COMMENT(t):
-    r'[##].*'
+    r'[##].*\n'
     return t
 
-t_ignore = '\t '
+t_ignore = '\t \r'
 
 # lexico = lex.lex()
 
