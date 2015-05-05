@@ -5,25 +5,25 @@ keywords= {
     'if':'IF',
     'else':'ELSE',
     'print':'PRINT',
-    'read':'READ',
+    # 'read':'READ',
     'proc':'PROC',
     'procedure':'PROCEDURE',
     'func':'FUNC',
     'function':'FUNCTION',
     'return':'RETURN',
     'for':'FOR',
-    'local':'LOCAL',
+    # 'local':'LOCAL',
     'begin':'BEGIN',
     'end' : 'END'
 }
 
 constants = {
-    'PI':'PI',
-    'PHI':'PHI',
-    'GAMMA':'GAMMA',
-    'E':'E',
-    'DEG':'DEG',
-    'PREC':'PREC'
+    'PI':'CONSTANT',
+    'PHI':'CONSTANT',
+    'GAMMA':'CONSTANT',
+    'E':'CONSTANT',
+    'DEG':'CONSTANT',
+    'PREC':'CONSTANT'
 }
 
 bltin = {
@@ -50,7 +50,7 @@ tokens = [
    'STRING',
    'COMMENT',
    'FLOAT', 
-   'NUMBER',
+   # 'NUMBER',
    'ID',
    #simbolos
    'PLUS',
@@ -76,7 +76,7 @@ tokens = [
    'NE',
    'INC',
    'DEC',
-   'DOLLAR',
+   # 'DOLLAR',
    'EXP',
    'LPARENT',
    'RPARENT',
@@ -112,7 +112,7 @@ t_ASSIGN = r'='
 t_NE = r'!='
 t_INC = r'\+\+'
 t_DEC = r'\-\-'
-t_DOLLAR = r'\$'
+# t_DOLLAR = r'\$'
 t_EXP = r'\^'
 t_LPARENT = r'\('
 t_RPARENT = r'\)'
@@ -141,10 +141,10 @@ def t_FLOAT(t):
     t.value = float(t.value)
     return t
 
-def t_NUMBER(t):
-    r'[0-9]+'
-    t.value = int(t.value)
-    return t
+# def t_NUMBER(t):
+#     r'[0-9]+'
+#     t.value = int(t.value)
+#     return t
 
     
 def t_ID(t):
@@ -289,33 +289,33 @@ t_ignore = '\t '
 #    if not tokenizer: break
 #    print tokenizer
 
-    
+lexer = lex.lex()
 
-if __name__ == '__main__':
-    # Build the lexer
-    import sys 
+# if __name__ == '__main__':
+#     # Build the lexer
+#     import sys 
     
-    lex = lex.lex()
     
-    if len(sys.argv) > 1:
-        f = open(sys.argv[1],"r")
-        data = f.read()
-        f.close()
-    else:
-        data = ""
-        while 1:
-            try:
-                data += raw_input() + "\n"
-            except:
-                break
     
-    lex.input(data)
+#     if len(sys.argv) > 1:
+#         f = open(sys.argv[1],"r")
+#         data = f.read()
+#         f.close()
+#     else:
+#         data = ""
+#         while 1:
+#             try:
+#                 data += raw_input() + "\n"
+#             except:
+#                 break
     
-    # Tokenize
-    while 1:
-            tok = lex.token()
-            if not tok: break            # No more input
-            print tok
+#     lexer.input(data)
+    
+#     # Tokenize
+#     while 1:
+#             tok = lexer.token()
+#             if not tok: break            # No more input
+#             print tok
     
       
     

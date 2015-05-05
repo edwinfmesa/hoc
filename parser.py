@@ -1,6 +1,9 @@
 import libs.ply.yacc as yacc
 from lexer import *
 
+def p_program(p):
+    "program : list"
+
 # -------------------------------------------------------
 
 def p_list_empty(p):
@@ -31,31 +34,14 @@ def p_list_error(p):
     "list : list error NEWLINE"
     pass
 
+def p_list_comment(p):
+    "list : list COMMENT NEWLINE"
+    pass
+
+
+
 # ----------------------------------------------------
 
-def p_asgn_equal(p):
-    "asgn : ID ASSIGN expr "
-    pass
-
-def p_asgn_addeq(p):
-    "asgn : ID ADDEQ expr "
-    pass
-
-def p_asgn_subeq(p):
-    "asgn : ID SUBEQ expr "
-    pass
-
-def p_asgn_muleq(p):
-    "asgn : ID MULEQ expr "
-    pass
-
-def p_asgn_diveq(p):
-    "asgn : ID DIVEQ expr "
-    pass
-
-def p_asgn_modeq(p):
-    "asgn : ID MODEQ expr "
-    pass
 
 # ------------------------------------------------------
 
@@ -68,7 +54,7 @@ def p_stmt_return(p):
     pass
 
 def p_stmt_return_expr(p):
-    "stmt : RETURN expr"
+    "stmt : RETURN expr "
     pass
 
 def p_stmt_proc(p):
@@ -119,111 +105,191 @@ def p_stmtlist_stmt(p):
     "stmtlist : stmtlist stmt "
     pass
 
-# --------------------------------------------------------
+# ---------------expr-----------------------------------------
 
-def p_expr_number(p):
-    "expr : NUMBER"
+def p_expr_data(p):
+    "expr : data"
     pass
 
-def p_expr_id(p):
-    "expr : ID "
+def p_expr_unaryop(p):
+    "expr : unaryop"
     pass
 
-def p_expr_asgn(p):
-    "expr : asgn"
+def p_expr_binaryop(p):
+    "expr : binaryop"
     pass
 
-def p_expr_function(p):
-    "expr : FUNCTION BEGIN"
-    pass
-
-def p_expr_read(p):
-    "expr : LPARENT ID RPARENT"
-    pass
-
-def p_expr_bltin(p):
-    "expr : ID LPARENT expr RPARENT"
-    pass
-
-def p_expr_parent(p):
+def p_expr_group(p):
     "expr : LPARENT expr RPARENT"
     pass
 
-def p_expr_plus(p):
-    'expr : expr PLUS expr'
+def p_data_callfunc(p):
+    "expr : callfunc"
+    pass
+# ---------------data----------------------------------------
+
+def p_data_float(p):
+    "data : FLOAT"
     pass
 
-def p_expr_minus(p):
-    'expr : expr MINUS expr'
+def p_data_constant(p):
+    "data : CONSTANT"
+    pass
+
+def p_data_id(p):
+    "data : ID "
+    pass
+
+#  -------------unaryop---------------------------------------------
+
+
+def p_unaryop_munit(p):
+    "unaryop : MINUS expr "
+    pass
+
+def p_unaryop_inc(p):
+    "unaryop : INC ID"
+    pass
+
+def p_unaryop_dec(p):
+    "unaryop : DEC ID"
+    pass
+
+def p_unaryop_inc2(p):
+    "unaryop : ID INC"
+    pass
+
+def p_unaryop_dec2(p):
+    "unaryop : ID DEC"
+    pass
+
+# ----------------binaryop--------------------------------------------------
+
+def p_binaryop_asgn(p):
+    "binaryop : asgn"
+    pass
+
+def p_binaryop_mathop(p):
+    "binaryop : mathop"
+    pass
+
+def p_binaryop_logicop(p):
+    "binaryop : logicop"
+
+
+# -----------------asgn---------------------------------------------------
+
+def p_asgn_equal(p):
+    "asgn : ID ASSIGN expr "
+    pass
+
+def p_asgn_addeq(p):
+    "asgn : ID ADDEQ expr "
+    pass
+
+def p_asgn_subeq(p):
+    "asgn : ID SUBEQ expr "
+    pass
+
+def p_asgn_muleq(p):
+    "asgn : ID MULEQ expr "
+    pass
+
+def p_asgn_diveq(p):
+    "asgn : ID DIVEQ expr "
+    pass
+
+def p_asgn_modeq(p):
+    "asgn : ID MODEQ expr "
+    pass
+
+
+# -----------------mathop------------------------------------
+
+
+# def p_expr_function(p):
+#     "expr : FUNCTION BEGIN"
+#     pass
+
+
+
+# def p_expr_bltin(p):
+#     "expr : BLTIN LPARENT expr RPARENT"
+#     pass
+
+# def p_expr_parent(p):
+#     "expr : LPARENT expr RPARENT"
+#     pass
+
+def p_mathop_exp(p):
+    'mathop : expr EXP expr'
+
+def p_mathop_plus(p):
+    'mathop : expr PLUS expr'
+    pass
+
+def p_mathop_minus(p):
+    'mathop : expr MINUS expr'
     pass
     
-def p_expr_times(p):
-    "expr : expr TIMES expr"
+def p_mathop_times(p):
+    "mathop : expr TIMES expr"
     pass
 
-def p_expr_divide(p):
-    "expr : expr DIVIDE expr"
+def p_mathop_divide(p):
+    "mathop : expr DIVIDE expr"
     pass
 
-def p_expr_mod(p):
-    "expr : expr MOD expr"
+def p_mathop_mod(p):
+    "mathop : expr MOD expr"
     pass
 
-def p_expr_munit(p):
-    "expr : MINUS expr "
+# ----------------logicop --------------
+
+def p_logicop_lt(p):
+    'logicop : expr LT expr'
     pass
 
-def p_expr_lt(p):
-    'expr : expr LT expr'
+def p_logicop_gt(p):
+    'logicop : expr GT expr'
     pass
 
-def p_expr_gt(p):
-    'expr : expr GT expr'
-    pass
-
-def p_expr_le(p):
-    'expr : expr LE expr'
+def p_logicop_le(p):
+    'logicop : expr LE expr'
     pass
 
 def p_expr_ge(p):
-    'expr : expr GE expr'
+    'logicop : expr GE expr'
     pass
 
 def p_expr_eq(p):
-    'expr : expr EQ expr'
+    'logicop : expr EQ expr'
     pass
 
 def p_expr_ne(p):
-    'expr : expr NE expr'
+    'logicop : expr NE expr'
     pass
     
 def p_expr_or(p):
-    'expr : expr OR expr'
+    'logicop : expr OR expr'
     pass
 
-def p_expr_and(p):
-    'expr : expr AND expr'
+def p_logicop_and(p):
+    'logicop : expr AND expr'
     pass
 
-def p_expr_not(p):
-    'expr : expr NOT expr'
+def p_logicop_not(p):
+    'logicop : expr NOT expr'
     pass
 
-def p_expr_inc(p):
-    "expr : INC ID"
+# ---------------callfunc ---------------------------
+
+def p_callfunc_bltn(p):
+    "callfunc : BLTIN LPARENT expr RPARENT"
     pass
 
-def p_expr_dec(p):
-    "expr : DEC ID"
-    pass
-
-def p_expr_inc2(p):
-    "expr : ID INC"
-    pass
-
-def p_expr_dec2(p):
-    "expr : ID DEC"
-    pass
+def p_callfunc_func(p):
+    "callfunc : ID LPARENT expr RPARENT"
 
 # ------------------------------------------------------
 
@@ -279,6 +345,7 @@ def p_procname_proc(p):
 
 def p_procname_bltin(p):
     "procname : BLTIN"
+    pass
 
 # ------------------------------------------------
 
@@ -303,11 +370,15 @@ def p_empty(p):
 # ---------------------------------------------------------
 
 def p_error(p):
-    print "Syntax error in input!"
-    # return "ERROR"
+    if p:
+         print("Syntax error at token", p.type)
+         parser.errok()
+    else:
+         print("Syntax error at EOF")
 
 # -------------------------------------------------------
 
+# Build the parser
 parser = yacc.yacc()
 
 while True:
@@ -317,8 +388,60 @@ while True:
        break
    if not s: continue
    result = parser.parse(s)
-   print result
+   print(result)
 
+
+# parser = yacc.yacc()
+
+# if __name__ == '__main__':
+#     # Build the lexer
+#     import sys 
+    
+    
+    
+#     if len(sys.argv) > 1:
+#         f = open(sys.argv[1],"r")
+#         data = f.read()
+#         f.close()
+        
+#     else:
+#         data = ""
+#         while 1:
+#             try:
+#                 data += raw_input() + "\n"
+#             except:
+#                 break
+    
+#     # lex.input(data)
+#     lexer.input(data)
+#     result = parser.parse(data,lexer=lexer)
+#     print result
+#     # # Tokenize
+#     # while 1:
+#     #         tok = lex.token()
+#     #         if not tok: break            # No more input
+#     #         print tok
+    
+      
+    
+    
+    
+# # parser = yacc.yacc(debug=debug)
+
+# # with open('first.test') as f:
+# #     data = f.read()
+# #     lexer.input(data)
+# #     parsed = parser.parse(data, lexer=lexer)
+    
+# #     i = Interpeter(parsed)
+# #     i.interpet()
+
+#     #for tok in lexer:
+#         #print tok
+    
+    
+    
+    
 
 
 
