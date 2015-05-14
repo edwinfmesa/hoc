@@ -1,10 +1,10 @@
 func factorial(){
-	if ($1 ==0) {
+	if (1 ==0) {
 		return sin(1)
 	} else {
-		while ($1 >0){
-		    $2 += $1
+		while (1 >0){
+		    a += 1
 		}
-		$1= $1-1
-		return $2
+		b= 1-1
+		return 2
 	}

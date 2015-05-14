@@ -156,7 +156,7 @@ def t_ID(t):
     elif  t.value in constants: 
       t.type=constants[t.value]
     elif t.value in bltin:
-      t.type='BLTIN'
+      t.type=bltin[t.value]
     return t
 
 def t_error_STRING(t):
@@ -172,112 +172,7 @@ t_ignore = '\t \r'
 
 # lexico = lex.lex()
 
-# t1="""
-# 3+4%
-# 1&&3
-# 2 ||3
-# 1!==3<
-# 4>1
-# 2<=2
-# 9>=10
-# 1++(3)
-# 1$2
-# """
 
-# t2="""
-
-# if
-# 2+2
-# i=1
-# if
-# pi
-# PI
-# sin 
-# cos(0)
-# 5.0
-# 3E
-# """
-
-# t3="""
-# 4.5
-# 3
-# 565.999
-# -34
-# -344.44
-# 4E
-# 5E1
-# 5E6
-# 6E-5
-# -3E-4
-# """
-
-# t4="""
-# 3+4-8+2/4*8
-# 4+1+2*PHI
-# print (7-8-1)+E
-# tan(PI/3)+cos(2*pi)
-# """
-
-# t5="""
-# while (read(x)) {
-#      print "Prueba de modulo ", x%40000
-# } 
-# ## esto es un comentario en hoc
-# hola
-# "esto es un error 
-# @
-# """
-
-# t6='''
-# proc squares(){ 
-#     local i, j, k 
-#     for (i=1; i <= $1; i=i+1){ 
-#         print i*i 
-#     }
-# } 
-# '''
-
-# t7="""
-# func reciduous(){
-#     if ($1 ==$2) {
-#        return 1
-#     } else {
-#       return $1/$2
-#     } 
-# } 
-# """
-# t8="""
-# func cuadrado(){
-#     if ($1 ==0) {
-#        return 1
-#     } else {
-#       return $1*$1
-#     } 
-# } 
-# """
-# t9="""
-# func factorial(){
-#     if ($1 ==0) {
-#        return 1
-#     } else {
-#         while ($1 >0){
-#             $2 += $1
-#         }
-#         $1= $1-1
-#         return $2
-#     } 
-# } 
-# """
-# t10="""
-# func igual(){
-#     if ($1 ==$2) {
-#         return 1
-#     } else {
-#         return 0
-#     } 
-# } 
-# igual(3,3)
-# """
 
 # test = t1
 # print test
@@ -293,31 +188,31 @@ t_ignore = '\t \r'
 
 lexer = lex.lex()
 
-# if __name__ == '__main__':
-#     # Build the lexer
-#     import sys 
+if __name__ == '__main__':
+    # Build the lexer
+    import sys 
     
     
     
-#     if len(sys.argv) > 1:
-#         f = open(sys.argv[1],"r")
-#         data = f.read()
-#         f.close()
-#     else:
-#         data = ""
-#         while 1:
-#             try:
-#                 data += raw_input() + "\n"
-#             except:
-#                 break
+    if len(sys.argv) > 1:
+        f = open(sys.argv[1],"r")
+        data = f.read()
+        f.close()
+    else:
+        data = ""
+        while 1:
+            try:
+                data += raw_input() + "\n"
+            except:
+                break
     
-#     lexer.input(data)
+    lexer.input(data)
     
-#     # Tokenize
-#     while 1:
-#             tok = lexer.token()
-#             if not tok: break            # No more input
-#             print tok
+    # Tokenize
+    while 1:
+            tok = lexer.token()
+            if not tok: break            # No more input
+            print tok
     
       
     
