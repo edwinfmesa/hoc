@@ -1,0 +1,9 @@
+// Compilador
+digraph {
+	n2 [label="n2 - +"]
+	n4 [label="n4 - 4.0"]
+	n3 [label="n3 - expr"]
+	n6 [label="n6 - 3.0"]
+	n5 [label="n5 - expr"]
+	n1 [label="n1 - expr"]
+}

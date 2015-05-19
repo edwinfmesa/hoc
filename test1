@@ -1,10 +1,5 @@
-func factorial(){
-	if (1 ==0) {
-		return sin(1)
-	} else {
-		while (1 >0){
-		    a += 1
-		}
-		b= 1-1
-		return 2
-	}
+func gcd(a, b) {
+	temp = abs(a) % abs(b)
+	if(temp == 0) return abs(b)
+	return gcd(k, xemp)
+}

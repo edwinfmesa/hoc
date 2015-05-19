@@ -1,0 +1,18 @@
+// Compilador
+digraph {
+	n1 [label="n1  ProgList"]
+	n2 [label="n2  Empty"]
+		n1 -> n2
+	n4 [label="n4  +"]
+	n6 [label="n6  b"]
+		n5 -> n6
+	n5 [label="n5  expr"]
+	n8 [label="n8  3.0"]
+		n7 -> n8
+	n7 [label="n7  expr"]
+		n4 -> n5
+		n4 -> n7
+		n3 -> n4
+	n3 [label="n3  expr"]
+		n1 -> n3
+}

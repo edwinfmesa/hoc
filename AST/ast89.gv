@@ -1,0 +1,4 @@
+// Compilador
+digraph {
+	n1 [label=3.0]
+}

@@ -6,15 +6,15 @@ keywords= {
     'else':'ELSE',
     'print':'PRINT',
     # 'read':'READ',
-    'proc':'PROC',
-    'procedure':'PROCEDURE',
+    # 'proc':'PROC',
+    # 'procedure':'PROCEDURE',
     'func':'FUNC',
-    'function':'FUNCTION',
+    # 'function':'FUNCTION',
     'return':'RETURN',
     'for':'FOR',
     # 'local':'LOCAL',
-    'begin':'BEGIN',
-    'end' : 'END'
+    # 'begin':'BEGIN',
+    # 'end' : 'END'
 }
 
 constants = {
@@ -51,7 +51,8 @@ tokens = [
    'COMMENT',
    'FLOAT', 
    # 'NUMBER',
-   'ID',
+   'VAR',
+   'FUNCTION',
    #simbolos
    'PLUS',
    'MINUS',
@@ -149,7 +150,18 @@ def t_FLOAT(t):
 #     return t
 
     
-def t_ID(t):
+def t_FUNCTION(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*\('
+    if t.value in keywords:
+      t.type=keywords[t.value]
+    elif  t.value in constants: 
+      t.type=constants[t.value]
+    elif t.value in bltin:
+      t.type=bltin[t.value]
+    return t
+
+
+def t_VAR(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in keywords:
       t.type=keywords[t.value]
@@ -158,6 +170,9 @@ def t_ID(t):
     elif t.value in bltin:
       t.type=bltin[t.value]
     return t
+
+
+
 
 def t_error_STRING(t):
     r'\".*'

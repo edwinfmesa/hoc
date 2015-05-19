@@ -75,12 +75,29 @@ class Program(AST):
 	_fields = ['program']
 
 @validate_fields(statements=list)
-class Statements(AST):
+class StatementList(AST):
 	_fields = ['statements']
 
 	def append(self,e):
 		self.statements.append(e)
-	
+
+# ED
+@validate_fields(proglist=list)
+class ProgList(AST):
+	_fields = ['proglist']
+
+	def append(self,e):
+		self.proglist.append(e)
+
+
+# ED
+class ReturnValue(AST):
+	_fields = ['return','value']
+
+# ED
+class PrintValue(AST):
+	_fields = ['print','value']
+
 class Statement(AST):
 	_fields = ['statement']
 
@@ -142,8 +159,41 @@ class ExprList(AST):
 	def append(self, e):
 		self.expressions.append(e)
 
+#ED
+class Expression(AST):
+	_fields = ['expression']
+
+	# def __unicode__(self):
+	# 	print "expr", self.expression
+
 class Empty(AST):
 	_fields = []
+
+	# def append(self, e):
+	# 	self.expressions.append(e)
+#
+
+# class NewLine(AST):
+# 	_fields = []
+
+class GroupParent(AST):
+	_fields = ['lp','expr','rp']
+#
+class ArgList(AST):
+	_fields = ['arglist']	
+
+	def append(self, e):
+		self.arglist.append(e)
+#
+class FormalsList(AST):
+	_fields = ['formallist']	
+
+	def append(self, e):
+		self.formallist.append(e)
+
+class Calls(AST):
+	_fields = ['function','arglist']
+
 
 
 # Usted deberá añadir mas nodos aquí.  Algunos nodos sugeridos son
@@ -265,3 +315,123 @@ def flatten(top):
 	d = Flattener()
 	d.visit(top)
 	return d.nodes
+
+
+from graphviz import Digraph
+import datetime
+import random
+
+
+class DotVisitor(NodeVisitor):
+	def __init__(self,node):
+		self.dot2 = Digraph(comment='Compilador')
+		self.dot="digraph AST{\n"
+		self.id=0
+		self.visit(node)
+
+	def __str__(self):
+		
+		filename = 'AST/ast'+str(int(100*random.random()))+'.gv'
+		self.dot2.render(filename, view=True)
+		return self.dot +"\n}"
+
+	def Id(self):
+		self.id +=1
+		return "n%d" % self.id 
+
+	def visit_Literal(self,node):
+
+		name = self.Id()
+		# print name, node, node.value
+		label = node.value
+		if label == '\n':
+			label = 'NEWLINE'
+		self.dot +="\t" + name +"[label="+ str(label) + "]\n"
+		self.dot2.node(name, str(str(name)+"  "+str(label)))
+		return name
+
+	def visit_BinaryOp(self,node):
+		name=self.Id()
+		self.dot +="\t" + name +"[label="+ node.op + "]\n"
+		self.dot2.node(name, str(str(name)+"  "+str(node.op)))
+
+		# print "-",node
+		# print "-",node.left 
+		# print "-",node.right
+		l=self.visit(node.left)
+		
+		r=self.visit(node.right)
+		# print r
+		self.dot +="\t"+ name +"->"+ l + "\n"
+		self.dot +="\t"+ name +"->"+ r + "\n"
+
+		self.dot2.edge(name,l)
+		self.dot2.edge(name,r)
+		return name
+
+	def visit_Expression(self,node):
+		
+		name=self.Id()
+		expr = self.visit(node.expression)
+
+
+		# print "N1 --------",expr
+		self.dot +="\t"+ name +"->"+ expr + "\n"
+		self.dot +="\t" + name +"[label="+ "expr" + "]\n"
+
+		self.dot2.edge(name,expr)
+		self.dot2.node(name, str(str(name)+"  expr"))
+		return name
+
+	def visit_Statement(self,node):
+
+		name=self.Id()
+		stmt = self.visit(node.statement)
+
+
+		# print "N1 --------",expr
+		self.dot +="\t"+ name +"->"+ stmt + "\n"
+		self.dot +="\t" + name +"[label="+ "stmt" + "]\n"
+
+		self.dot2.edge(name,stmt)
+		self.dot2.node(name, str(str(name)+"  stmt"))
+		return name
+
+	def visit_Empty(self,node):
+		name = self.Id()
+		self.dot +="\t" + name +"[label="+ "Empty" + "]\n"
+		self.dot2.node(name, str(str(name)+"  "+"Empty"))
+		return name
+
+	def visit_ProgList(self,node):
+		name = self.Id()
+		self.dot +="\t" + name +"[label="+ "ProgList" + "]\n"
+		self.dot2.node(name, str(name)+"  "+"ProgList")
+
+		print node.proglist
+
+		for pl in node.proglist:
+			list_obj = self.visit(pl)
+			print "OBJ",pl,list_obj
+			self.dot +="\t"+ name +"->"+ list_obj + "\n"
+			self.dot2.edge(name,list_obj)
+
+		return name
+
+	def visit_StoreVar(self,node):
+		name = self.Id()
+		label = node.name
+		self.dot +="\t" + name +"[label="+ str(label) + "]\n"
+		self.dot2.node(name, str(str(name)+"  "+str(label)))
+		return name	
+
+	# def visit_UnaryOp(self,node):
+	# 	1,2,3,5,7
+
+	# def visit_location(self):
+	# 	name= self.Id()
+	# 	self.dot += "/t"+ name +"[shape=box,label=location("+node.name+")]\n"
+	# 	return name
+
+	# def visit_literal(self,node):
+	#      1,2,3
