@@ -170,7 +170,7 @@ def p_stmt_return(p):
 
 def p_stmt_return_expr(p):
     "stmt : RETURN  expr "
-    p[0]=Statement(ReturnValue(P[1],P[2]))
+    p[0]=Statement(ReturnValue(p[1],p[2]))
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -183,7 +183,7 @@ def p_stmt_return_expr(p):
 
 def p_stmt_print(p):
     "stmt : PRINT prlist"
-    p[0]=Statement(PrintValue(P[1],P[2]))
+    p[0]=Statement(PrintValue(p[1],p[2]))
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -223,7 +223,7 @@ def p_stmt_if_else(p):
 
 def p_stmt_braket(p):
     "stmt : LBRACKET stmtlist RBRACKET "
-    p[0]=Statement(p[1]) # Pendiente
+    p[0]=Statement(p[2]) # Pendiente
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -242,7 +242,7 @@ def p_cond_expr(p):
 
 def p_stmtlist_empty(p):
     "stmtlist : empty "
-    p[0]=StatementsList([Empty()])
+    p[0]=StatementList([Empty()])
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -299,7 +299,7 @@ def p_expr_binaryop(p):
 
 def p_expr_group(p):
     "expr : LPARENT expr RPARENT"
-    p[0]=Expression(GroupParent(P[1],p[2],p[3]))
+    p[0]=Expression(GroupParent(p[1],p[2],p[3]))
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -333,7 +333,7 @@ def p_data_constant(p):
 
 def p_data_VAR(p):
     "data : VAR "
-    p[0]=StoreVar(p[1])
+    p[0]=LoadVar(p[1])
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -623,7 +623,7 @@ def p_prlist_comma_str(p):
 
 def p_defn_func(p):
     "defn : FUNC FUNCTION formals RPARENT stmt"
-    p[0]=[p[1]]
+    p[0]=FuncDef(Literal(p[2]),p[3],p[5])
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -638,14 +638,14 @@ def p_defn_func(p):
 
 def p_formals_empty(p):
     "formals : empty"
-    p[0]=FormalsList([p[1]])
+    p[0]=FormalsList([Empty()])
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
     
 def p_formals_VAR(p):
     "formals : VAR"
-    p[0]=FormalsList([p[1]])
+    p[0]=FormalsList([StoreVar(p[1])]) #modificar
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1
@@ -653,7 +653,7 @@ def p_formals_VAR(p):
 
 def p_formals_comma_VAR(p):
     "formals : formals COMMA VAR"
-    p[1].append(p[3])
+    p[1].append(StoreVar(p[3]))
     p[0]=p[1]
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
@@ -664,7 +664,7 @@ def p_formals_comma_VAR(p):
 
 def p_arglist_empty(p):
     "arglist : empty"
-    p[0]=ArgList([p[1]])
+    p[0]=ArgList([Empty()])
     global cont
     print cont, inspect.stack()[0][3] + get_p(p)
     cont = cont + 1

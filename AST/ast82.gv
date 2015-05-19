@@ -39,12 +39,4 @@ digraph {
 		n15 -> n16
 	n15 [label="n15  expr"]
 		n1 -> n15
-	n21 [label="n21  +="]
-	n22 [label="n22  n"]
-	n24 [label="n24  3.0"]
-		n23 -> n24
-	n23 [label="n23  expr"]
-		n21 -> n22
-		n21 -> n23
-		n1 -> n21
 }

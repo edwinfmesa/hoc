@@ -4,10 +4,10 @@ digraph {
 	n2 [label="n2  Empty"]
 		n1 -> n2
 	n6 [label="n6  +"]
-	n8 [label="n8  LoadVar(a)"]
+	n8 [label="n8  a"]
 		n7 -> n8
 	n7 [label="n7  expr"]
-	n10 [label="n10  LoadVar(b)"]
+	n10 [label="n10  b"]
 		n9 -> n10
 	n9 [label="n9  expr"]
 		n6 -> n7

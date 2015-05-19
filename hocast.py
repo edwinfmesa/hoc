@@ -194,7 +194,11 @@ class FormalsList(AST):
 class Calls(AST):
 	_fields = ['function','arglist']
 
+class LoadVar(AST):
+	_fields = ['name']	
 
+class FuncDef(AST):
+	_fields = ['function','formals','stmt']
 
 # Usted deberá añadir mas nodos aquí.  Algunos nodos sugeridos son
 # BinaryOperator, UnaryOperator, ConstDeclaration, VarDeclaration, 
@@ -374,7 +378,7 @@ class DotVisitor(NodeVisitor):
 		name=self.Id()
 		expr = self.visit(node.expression)
 
-
+		# print expr, node.expression
 		# print "N1 --------",expr
 		self.dot +="\t"+ name +"->"+ expr + "\n"
 		self.dot +="\t" + name +"[label="+ "expr" + "]\n"
@@ -395,6 +399,7 @@ class DotVisitor(NodeVisitor):
 
 		self.dot2.edge(name,stmt)
 		self.dot2.node(name, str(str(name)+"  stmt"))
+
 		return name
 
 	def visit_Empty(self,node):
@@ -408,7 +413,7 @@ class DotVisitor(NodeVisitor):
 		self.dot +="\t" + name +"[label="+ "ProgList" + "]\n"
 		self.dot2.node(name, str(name)+"  "+"ProgList")
 
-		print node.proglist
+		# print node.proglist
 
 		for pl in node.proglist:
 			list_obj = self.visit(pl)
@@ -418,12 +423,90 @@ class DotVisitor(NodeVisitor):
 
 		return name
 
+
+	def visit_StatementList(self,node):
+		name = self.Id()
+		self.dot +="\t" + name +"[label="+ "StatementList" + "]\n"
+		self.dot2.node(name, str(name)+"  "+"StatementList")
+
+		# print node.proglist
+
+		for st in node.statements:
+			list_obj = self.visit(st)
+			# print "OBJ",st,list_obj
+			self.dot +="\t"+ name +"->"+ list_obj + "\n"
+			self.dot2.edge(name,list_obj)
+
+		return name
+
+	def visit_FormalsList(self,node):
+		name = self.Id()
+		self.dot +="\t" + name +"[label="+ "FormalsList" + "]\n"
+		self.dot2.node(name, str(name)+"  "+"FormalsList")
+
+		print "FORMALLIST", node.formallist
+
+		for obj in node.formallist:
+			list_obj = self.visit(obj)
+			self.dot +="\t"+ name +"->"+ list_obj + "\n"
+			self.dot2.edge(name,list_obj)
+
+		return name
+
 	def visit_StoreVar(self,node):
 		name = self.Id()
 		label = node.name
+
 		self.dot +="\t" + name +"[label="+ str(label) + "]\n"
-		self.dot2.node(name, str(str(name)+"  "+str(label)))
+		self.dot2.node(name, str(str(name)+"  StoreVar("+str(label)+")"))
+
 		return name	
+
+	def visit_LoadVar(self,node):
+		name = self.Id()
+		label = node.name
+
+		self.dot +="\t" + name +"[label="+ str(label) + "]\n"
+		self.dot2.node(name, str(str(name)+"  LoadVar("+str(label)+")"))
+
+		return name	
+
+	def visit_GroupParent(self,node):
+		name=self.Id()
+		expr = self.visit(node.expr)
+
+		
+		self.dot +="\t" + name +"[label="+ "(GroupParent)" + "]\n"
+		self.dot +="\t"+ name +"->"+ expr + "\n"
+
+		self.dot2.edge(name,expr)
+		self.dot2.node(name, str(str(name)+"  (GroupParent)"))
+		return name
+
+	def visit_FuncDef(self,node):
+		name=self.Id()
+		self.dot +="\t" + name +"[label="+ "(FuncDef)" + "]\n"
+		self.dot2.node(name, str(str(name)+"  (FuncDef)"))
+
+		# print node.function,node.formals, node.stmt
+
+		function_id = self.visit(node.function)
+		formals_id = self.visit(node.formals)
+		stmt_id = self.visit(node.stmt)
+
+		# print function,formals,stmt
+
+		self.dot +="\t"+ name +"->"+ function_id + "\n"
+		self.dot +="\t"+ name +"->"+ formals_id + "\n"
+		self.dot +="\t"+ name +"->"+ stmt_id + "\n"
+		self.dot2.edge(name,function_id)
+		self.dot2.edge(name,formals_id)
+		self.dot2.edge(name,stmt_id)
+
+		
+
+		return name
+		
 
 	# def visit_UnaryOp(self,node):
 	# 	1,2,3,5,7
