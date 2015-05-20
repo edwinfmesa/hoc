@@ -7,9 +7,9 @@ keywords= {
     'print':'PRINT',
     # 'read':'READ',
     # 'proc':'PROC',
-    # 'procedure':'PROCEDURE',
+    'procedure':'PROCEDURE',
     'func':'FUNC',
-    # 'function':'FUNCTION',
+    'function':'FUNCTION',
     'return':'RETURN',
     'for':'FOR',
     # 'local':'LOCAL',
@@ -52,7 +52,7 @@ tokens = [
    'FLOAT', 
    # 'NUMBER',
    'VAR',
-   'FUNCTION',
+   # 'FUNCTION',
    #simbolos
    'PLUS',
    'MINUS',
@@ -77,7 +77,7 @@ tokens = [
    'NE',
    'INC',
    'DEC',
-   # 'DOLLAR',
+   'BLTIN',
    'EXP',
    'LPARENT',
    'RPARENT',
@@ -150,15 +150,15 @@ def t_FLOAT(t):
 #     return t
 
     
-def t_FUNCTION(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*\('
-    if t.value in keywords:
-      t.type=keywords[t.value]
-    elif  t.value in constants: 
-      t.type=constants[t.value]
-    elif t.value in bltin:
-      t.type=bltin[t.value]
-    return t
+# def t_FUNCTION(t):
+#     r'[a-zA-Z_][a-zA-Z0-9_]*\('
+#     if t.value in keywords:
+#       t.type=keywords[t.value]
+#     elif  t.value in constants: 
+#       t.type=constants[t.value]
+#     elif t.value in bltin:
+#       t.type=bltin[t.value]
+#     return t
 
 
 def t_VAR(t):
@@ -168,7 +168,7 @@ def t_VAR(t):
     elif  t.value in constants: 
       t.type=constants[t.value]
     elif t.value in bltin:
-      t.type=bltin[t.value]
+      t.type='BLTIN'  #bltin[t.value]
     return t
 
 

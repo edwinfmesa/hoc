@@ -22,7 +22,7 @@ def p_list_empty(p):
 
 def p_list_nl(p):
     " list : list  newline "
-    p[1].append(p[2])
+    # p[1].append(p[2])
     p[0]= p[1]
     
     global cont
@@ -166,7 +166,8 @@ def p_asgn_modeq(p):
 
 def p_stmt_expr(p):
     "stmt : expr"
-    p[0] = Statement(p[1])
+    # p[0] = Statement(p[1])
+    p[0]=p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -284,7 +285,7 @@ def p_stmtlist_empty(p):
 
 def p_stmlist_newline(p):
     "stmtlist : stmtlist newline"
-    p[1].append(p[2])
+    # p[1].append(p[2])
     p[0]=p[1]
     
     global cont
@@ -306,7 +307,8 @@ def p_stmtlist_stmt(p):
 
 def p_expr_data(p):
     "expr : data"
-    p[0]=Expression(p[1])
+    # p[0]=Expression(p[1])
+    p[0] = p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -315,7 +317,8 @@ def p_expr_data(p):
     
 def p_expr_asgn(p):
     "expr : asgn"
-    p[0]=Expression(p[1])
+    # p[0]=Expression(p[1])
+    p[0]=p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -325,7 +328,8 @@ def p_expr_asgn(p):
 
 def p_expr_unaryop(p):
     "expr : unaryop"
-    p[0]=Expression(p[1])
+    # p[0]=Expression(p[1])
+    p[0]=p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -335,7 +339,8 @@ def p_expr_unaryop(p):
 
 def p_expr_binaryop(p):
     "expr : binaryop"
-    p[0]=Expression(p[1])
+    # p[0]=Expression(p[1])
+    p[0]=p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -345,7 +350,8 @@ def p_expr_binaryop(p):
 
 def p_expr_group(p):
     "expr : LPARENT expr RPARENT"
-    p[0]=Expression(GroupParent(p[1],p[2],p[3]))
+    # p[0]=Expression(GroupParent(p[1],p[2],p[3]))
+    p[0]=p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -355,7 +361,8 @@ def p_expr_group(p):
 
 def p_data_callfunc(p):
     "expr : callfunc"
-    p[0]=Expression(p[1])
+    # p[0]=Expression(p[1])
+    p[0]=p[1]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -654,8 +661,8 @@ def p_logicop_and(p):
 # ---------------callfunc ---------------------------
 
 def p_callfunc_bltn(p):
-    "callfunc : bltin LPARENT arglist RPARENT"
-    p[0]=Calls(p[1],p[3])
+    "callfunc : BLTIN LPARENT arglist RPARENT"
+    p[0]=Calls(Literal(p[1]),p[3])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -668,8 +675,8 @@ def p_callfunc_bltn(p):
 #     p[0]=p[1]
 
 def p_callfunc(p):
-    "callfunc : FUNCTION arglist RPARENT"
-    p[0]=Calls(p[1],p[2])
+    "callfunc : FUNCTION LPARENT arglist RPARENT"
+    p[0]=Calls(p[2],p[3])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -736,14 +743,22 @@ def p_prlist_comma_str(p):
 # -----------------------def func----------------------------------
 
 def p_defn_func(p):
-    "defn : FUNC FUNCTION formals RPARENT stmt"
-    p[0]=FuncDef(Literal(p[2]),p[3],p[5])
+    # "defn : FUNC FUNCTION formals RPARENT stmt"
+    "defn : FUNC procname LPARENT formals RPARENT stmt"
+    p[0]=FuncDef(Literal(p[2]),p[4],p[6])
     
     global cont
     function_name = inspect.stack()[0][3]
     print_state(p,cont,function_name)
     cont = cont + 1
         
+def p_procname(p):
+    """procname : VAR 
+        | FUNCTION
+        | PROCEDURE
+    """
+    p[0]=p[1]
+
 
 # def p_defn_proc(p): # conflicto con procedimientos
 #     "defn : PROC procname LPARENT formals RPARENT stmt"
@@ -838,31 +853,31 @@ def p_newline(p):
 
 # -----------------bltin--------------------------------------
 
-def p_bltin(p):
-    """
-    bltin : SIN 
-        | COS 
-        | TAN 
-        | ASIN 
-        | ACOS 
-        | ATAN 
-        | SINH 
-        | COSH 
-        | TANH 
-        | INT 
-        | LOG 
-        | LOG10 
-        | SQRT 
-        | ABS 
-        | ERF 
-        | ERFC
-    """
-    p[0] = Literal(p[1])
+# def p_bltin(p):
+#     """
+#     bltin : SIN 
+#         | COS 
+#         | TAN 
+#         | ASIN 
+#         | ACOS 
+#         | ATAN 
+#         | SINH 
+#         | COSH 
+#         | TANH 
+#         | INT 
+#         | LOG 
+#         | LOG10 
+#         | SQRT 
+#         | ABS 
+#         | ERF 
+#         | ERFC
+#     """
+#     p[0] = Literal(p[1])
     
-    global cont
-    function_name = inspect.stack()[0][3]
-    print_state(p,cont,function_name)
-    cont = cont + 1
+#     global cont
+#     function_name = inspect.stack()[0][3]
+#     print_state(p,cont,function_name)
+#     cont = cont + 1
     
 
 # ------------------------ constants ---------------------------------

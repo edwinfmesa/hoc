@@ -76,6 +76,15 @@ class DotVisitor(NodeVisitor):
             self.dot.edge(node_id,list_obj)
         return node_id
 
+    def visit_ArgList(self,node):
+        node_id = self.node_id()
+        self.dot.node(node_id, str(node_id)+"  "+"ArgList")
+        for obj in node.arglist:
+            list_obj = self.visit(obj)
+            self.dot.edge(node_id,list_obj)
+        return node_id
+
+
     # Varios ------------------------------------------------
 
     def visit_BinaryOp(self,node):
@@ -96,6 +105,17 @@ class DotVisitor(NodeVisitor):
         self.dot.edge(node_id,function_id)
         self.dot.edge(node_id,formals_id)
         self.dot.edge(node_id,stmt_id)
+        return node_id
+
+    def visit_Calls(self,node):
+        node_id=self.node_id()
+        self.dot.node(node_id, str(node_id)+" (Calls)")
+        function_id = self.visit(node.function)
+        arglist_id = self.visit(node.arglist)
+        
+        self.dot.edge(node_id,function_id)
+        self.dot.edge(node_id,arglist_id)
+        
         return node_id
 
     # uno ------------------------------------------------
