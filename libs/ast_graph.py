@@ -84,6 +84,14 @@ class DotVisitor(NodeVisitor):
             self.dot.edge(node_id,list_obj)
         return node_id
 
+    def visit_PrList(self,node):
+        node_id = self.node_id()
+        self.dot.node(node_id, str(node_id)+"  "+"PrList")
+        for obj in node.prlist:
+            list_obj = self.visit(obj)
+            self.dot.edge(node_id,list_obj)
+        return node_id
+
 
     # Varios ------------------------------------------------
 
@@ -114,8 +122,24 @@ class DotVisitor(NodeVisitor):
         arglist_id = self.visit(node.arglist)
         
         self.dot.edge(node_id,function_id)
-        self.dot.edge(node_id,arglist_id)
+        self.dot.edge(node_id,arglist_id)        
+        return node_id
+
+    def visit_IfStatement(self,node):
+        node_id=self.node_id()
+        self.dot.node(node_id, str(node_id)+" (If)")
+
+        cond_id = self.visit(node.cond)
+        then_stmt_id = self.visit(node.then_stmt)
+
+        else_stmt = node.else_stmt
+
+        if else_stmt:
+            else_stmt_id = self.visit(node.else_stmt)
+            self.dot.edge(node_id,else_stmt_id)
         
+        self.dot.edge(node_id,cond_id)
+        self.dot.edge(node_id,then_stmt_id)        
         return node_id
 
     # uno ------------------------------------------------
@@ -140,6 +164,14 @@ class DotVisitor(NodeVisitor):
         self.dot.edge(node_id,expr)
         self.dot.node(node_id, str(node_id)+"  (GroupParent)")
         return node_id
+
+
+    def visit_PrintValue(self,node):
+        node_id=self.node_id()
+        value_id = self.visit(node.value)
+        self.dot.edge(node_id,value_id)
+        self.dot.node(node_id, str(node_id)+"  (Print)")
+        return node_id        
 
     # Hojas -----------------------------------------------
 
@@ -166,4 +198,10 @@ class DotVisitor(NodeVisitor):
         node_id = self.node_id()
         label = node.name
         self.dot.node(node_id, str(node_id)+"  LoadVar("+str(label)+")")
+        return node_id    
+
+    def visit_Param(self,node):
+        node_id = self.node_id()
+        label = node.name
+        self.dot.node(node_id, str(node_id)+"  Param("+str(label)+")")
         return node_id    

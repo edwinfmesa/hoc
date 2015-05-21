@@ -7,9 +7,10 @@ keywords= {
     'print':'PRINT',
     # 'read':'READ',
     # 'proc':'PROC',
-    'procedure':'PROCEDURE',
+ #   'procedure':'PROCEDURE',
     'func':'FUNC',
-    'function':'FUNCTION',
+    'proc':'PROC',
+  #  'function':'FUNCTION',
     'return':'RETURN',
     'for':'FOR',
     # 'local':'LOCAL',
@@ -17,34 +18,33 @@ keywords= {
     # 'end' : 'END'
 }
 
-constants = {
-    'PI':'PI',
-    'PHI':'PHI',
-    'GAMMA':'GAMMA',
-    'E':'E',
-    'DEG':'DEG',
-    'PREC':'PREC'
-}
+constants = [
+    'PI',
+    'PHI',
+    'GAMMA',
+    'E',
+    'DEG',
+    'PREC',
+]
 
-bltin = {
-    'sin':'SIN',
-    'cos':'COS',
-    'tan':'TAN',
-    'asin':'ASIN',
-    'acos':'ACOS',
-    'atan':'ATAN',
-    'sinh':'SINH',
-    'cosh':'COSH',
-    'tanh':'TANH',
-    'int':'INT',
-    'log':'LOG',
-    'log10':'LOG10',
-    'sqrt':'SQRT',
-    'abs':'ABS',
-    'erf':'ERF',
-    'erfc':'ERFC',
-
-}
+bltin = [
+    'sin',
+    'cos',
+    'tan',
+    'asin',
+    'acos',
+    'atan',
+    'sinh',
+    'cosh',
+    'tanh',
+    'int',
+    'log',
+    'log10',
+    'sqrt',
+    'abs',
+    'erf',
+    'erfc',
+]
 
 tokens = [
    'STRING',
@@ -78,6 +78,7 @@ tokens = [
    'INC',
    'DEC',
    'BLTIN',
+   'CONSTANT',
    'EXP',
    'LPARENT',
    'RPARENT',
@@ -89,13 +90,14 @@ tokens = [
    'UNARYMINUS'
 ] 
 
-tokens += keywords.values() + constants.values() + bltin.values()
+tokens += keywords.values() 
 
 
 t_PLUS    = r'\+'
 t_MINUS   = r'\-'
 t_TIMES   = r'\*'
 t_DIVIDE  = r'\/'
+# t_EXP = R'^'
 t_MOD = r'%'
 t_AND = r'&&'
 t_OR = r'\|\|'
@@ -130,7 +132,7 @@ t_UNARYMINUS = r'\-'
 
 
 
-def t_STRING(t):
+def t_STRING(t): # Error
     r'\"([^\\^\n] |(\\.))*\"'
     return t
 
@@ -166,7 +168,7 @@ def t_VAR(t):
     if t.value in keywords:
       t.type=keywords[t.value]
     elif  t.value in constants: 
-      t.type=constants[t.value]
+      t.type='CONSTANT'
     elif t.value in bltin:
       t.type='BLTIN'  #bltin[t.value]
     return t

@@ -1,4 +1,2 @@
-c = d
-sinh(1)
-func gcd(a, b) {
-	a= 5+4	}
+if (a=5) { print "Hola",c,6 } else print k
+func hola() { print x*5}

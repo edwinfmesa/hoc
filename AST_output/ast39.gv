@@ -1,5 +1,0 @@
-// Compilador
-digraph {
-	n1 [label="ID: n1 Label: 4.0"]
-	n2 [label="ID: n2 Label: 3.0"]
-}

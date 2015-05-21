@@ -9,6 +9,7 @@ def print_state(p, cont, function_name):
             try:
                 a = ' : ' + ' '.join((x.__class__.__name__ if (x.__class__.__name__ !='str' and x.__class__.__name__ != 'float') else str(x)) for x in p[1:]) 
             except:
-                a = ' ERROR: ' + type(p)
+                a = ' ERROR: '
+                print "ERROR", p
         print " "+str(cont)+(2-len(str(cont)))*" "+" . "+str(function_name)+guiones+a
     return 

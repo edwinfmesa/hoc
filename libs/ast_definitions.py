@@ -43,6 +43,13 @@ class FormalsList(AST):
     def append(self, e):
         self.formallist.append(e)
 
+@validate_fields(prlist=list)
+class PrList(AST):
+    _fields = ['prlist']
+
+    def append(self, e):
+        self.prlist.append(e)
+
 
 # Tres campos --------------------------------------------
 
@@ -50,7 +57,7 @@ class FuncDef(AST):
     _fields = ['function','formals','stmt']
 
 class IfStatement(AST):
-    _fields = ['condition', 'then_b', 'else_b']
+    _fields = ['cond', 'then_stmt', 'else_stmt']
 
 class BinaryOp(AST):
     _fields = ['op', 'left', 'right']
@@ -65,7 +72,7 @@ class ReturnValue(AST):
     _fields = ['return','value']
 
 class PrintValue(AST):
-    _fields = ['print','value']
+    _fields = ['value']
 
 class WhileStatement(AST):
     _fields = ['condition', 'body']
@@ -96,6 +103,9 @@ class Expression(AST):
 
 class LoadVar(AST):
     _fields = ['name']    
+
+class Param(AST):
+    _fields = ['name']   
 
 class Literal(AST):
     _fields = ['value']
