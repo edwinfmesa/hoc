@@ -43,6 +43,7 @@ class FormalsList(AST):
     def append(self, e):
         self.formallist.append(e)
 
+
 @validate_fields(prlist=list)
 class PrList(AST):
     _fields = ['prlist']
@@ -54,7 +55,7 @@ class PrList(AST):
 # Tres campos --------------------------------------------
 
 class FuncDef(AST):
-    _fields = ['function','formals','stmt']
+    _fields = ['function','formals','stmt','n_params']
 
 class IfStatement(AST):
     _fields = ['cond', 'then_stmt', 'else_stmt']
@@ -80,11 +81,11 @@ class WhileStatement(AST):
 class UnaryOp(AST):
     _fields = ['op', 'left']
 
-class FunCall(AST):
-    _fields = ['id', 'params']
+# class FunCall(AST):
+#     _fields = ['id', 'params']
 
 class Calls(AST):
-    _fields = ['function','arglist']
+    _fields = ['function','arglist','n_params']
 
 
 # Un campo ------------------------------

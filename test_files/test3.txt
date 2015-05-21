@@ -1,2 +1,10 @@
-if (a=5) { print "Hola",c,6 } else print k
-func hola() { print x*5}
+a=7
+func hola(b) { 
+	c = 3
+	print b, c
+}
+func abc(d,e,f){
+	print d,e,f
+}
+hola(5)
+abc(7,9)

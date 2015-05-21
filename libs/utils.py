@@ -13,3 +13,12 @@ def print_state(p, cont, function_name):
                 print "ERROR", p
         print " "+str(cont)+(2-len(str(cont)))*" "+" . "+str(function_name)+guiones+a
     return 
+
+
+def get_node_text(node_id, node_label):
+    node_text = ""
+    if SHOW_NODE_ID:
+        node_text += str(node_id)
+    if SHOW_NODE_LABEL:
+        node_text += " "+node_label
+    return node_text

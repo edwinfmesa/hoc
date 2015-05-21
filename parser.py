@@ -193,14 +193,9 @@ def p_stmt_return_expr(p):
     cont = cont + 1
         
 
-# def p_stmt_proc(p): # COmentado por conflicto
-#     "stmt : callproc "
-#     p[0]=p[1] 
-    
-
 def p_stmt_print(p):
     "stmt : PRINT prlist"
-    p[0]=PrintValue(p[2])
+    p[0]=p[2]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -250,7 +245,7 @@ def p_stmt_if_else(p):
 
 def p_stmt_braket(p):
     "stmt : LBRACKET stmtlist RBRACKET "
-    p[0]=Statement(p[2]) # Pendiente
+    p[0]=p[2]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -641,7 +636,7 @@ def p_logicop_and(p):
 
 def p_callfunc_bltn(p):
     "callfunc : BLTIN  begin LPARENT expr RPARENT"
-    p[0]=Calls(Literal(p[1]),p[4])
+    p[0]=Calls(Literal(p[1]),p[4],1)
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -651,7 +646,7 @@ def p_callfunc_bltn(p):
 
 def p_callfunc_call(p):
     "callfunc : VAR begin LPARENT arglist RPARENT"
-    p[0]=Calls(Literal(p[1]),p[4])
+    p[0]=Calls(Literal(p[1]),p[4], len(p[4].arglist))
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -716,7 +711,7 @@ def p_prlist_comma_str(p):
 
 def p_defn_func(p):
     "defn : FUNC procname LPARENT formals RPARENT stmt"
-    p[0]=FuncDef(Literal(p[2]),p[4],p[6])
+    p[0]=FuncDef(Literal(p[2]),p[4],p[6],len(p[4].formallist))
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -726,7 +721,7 @@ def p_defn_func(p):
 
 def p_defn_proc(p):
     "defn : PROC procname LPARENT formals RPARENT stmt"
-    p[0]=FuncDef(Literal(p[2]),p[4],p[6])
+    p[0]=FuncDef(Literal(p[2]),p[4],p[6],len(p[4].formallist))
     
     global cont
     function_name = inspect.stack()[0][3]
