@@ -5,6 +5,7 @@ func hola(b) {
 }
 func abc(d,e,f){
 	print d,e,f
+	return b
 }
 hola(5)
 abc(7,9)

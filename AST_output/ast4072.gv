@@ -1,0 +1,20 @@
+// Compilador
+digraph {
+	n1 [label=" Program"]
+	n2 [label="  Def 3"]
+	n3 [label=" abc"]
+	n4 [label=" Formals"]
+	n5 [label="   Param(d)"]
+		n4 -> n5
+	n6 [label="   Param(e)"]
+		n4 -> n6
+	n7 [label="   Param(f)"]
+		n4 -> n7
+	n8 [label=" Statements"]
+	n9 [label=" return"]
+		n8 -> n9
+		n2 -> n3
+		n2 -> n4
+		n2 -> n8
+		n1 -> n2
+}

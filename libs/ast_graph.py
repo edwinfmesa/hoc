@@ -70,10 +70,14 @@ class DotVisitor(NodeVisitor):
         node_label = "Statements"
         node_text = get_node_text(node_id,node_label)
         self.dot.node(node_id, node_text)
-
+        print "LISTA::::",node.statements
         for node in node.statements:
+            print "OBJ",node
             if not (node.__class__.__name__ == "Empty"):
+                print "SI",node
                 list_obj = self.visit(node)
+                print "List obj",list_obj
+
                 self.dot.edge(node_id,list_obj)
         return node_id
 
@@ -168,6 +172,20 @@ class DotVisitor(NodeVisitor):
         self.dot.edge(node_id,then_stmt_id)        
         return node_id
 
+
+    def visit_ReturnValue(self,node):
+        node_id=self.node_id()
+        print "Node id",node_id
+        node_label = " Return "
+        node_text = get_node_text(node_id,node_label)
+        self.dot.node(node_id, node_text)
+        print "------------------------",node_label
+
+        value_id = self.visit(node.value)
+        print "------------------------",value_id
+        self.dot.edge(node_id,value_id)        
+        return node_id
+
     # uno ------------------------------------------------
 
     def visit_Statement(self,node):
@@ -258,13 +276,16 @@ class DotVisitor(NodeVisitor):
         node_text = get_node_text(node_id,node_label)
         node_text += "\n-------------\n"
 
-        for p in node.entries:
-            node_text += p.key+"\n"
+        print "-------------entr",node.entries
+        print "lskdfjsdf",node.entries.keys()
+        print "JLJKDJLKFJ",node.entries.values()
+        for p in node.entries.keys():
+            node_text += p+"\n"
 
         # parent_id = self.visit(self.parent)
         # self.dot.edge(node_id,parent_id)
 
-        for child in self.children:
+        for child in node.children:
             child_id = self.visit(node)
             self.dot.edge(node_id,child_id)
 

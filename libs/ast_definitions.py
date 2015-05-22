@@ -70,7 +70,7 @@ class GroupParent(AST):
 # Dos campos ----------------------------------------------
 
 class ReturnValue(AST):
-    _fields = ['return','value']
+    _fields = ['value']
 
 class PrintValue(AST):
     _fields = ['value']

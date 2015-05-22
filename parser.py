@@ -3,6 +3,7 @@ from libs.ast_definitions import *
 from libs.ast_graph import DotVisitor
 from libs.utils import *
 from libs.settings import *
+from libs.symbtab import SymTabVisitor
 import inspect
 
 from lexer import *
@@ -173,19 +174,21 @@ def p_stmt_expr(p):
     cont = cont + 1
     
 
-def p_stmt_return(p):
-    "stmt : RETURN"
-    p[0] = Statement(p[1])
+        
+
+def p_stmt_return_expr(p):
+    "stmt : RETURN  expr "
+    p[0]=ReturnValue(p[2])
     
     global cont
     function_name = inspect.stack()[0][3]
     print_state(p,cont,function_name)
     cont = cont + 1
-        
 
-def p_stmt_return_expr(p):
-    "stmt : RETURN  expr "
-    p[0]=Statement(ReturnValue(p[1],p[2]))
+
+def p_stmt_return(p):
+    "stmt : RETURN"
+    p[0] = Literal(p[1])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -899,6 +902,12 @@ if __name__ == '__main__':
     if GRAPH_AST:
         dot_visitor_obj = DotVisitor(root)
         dot_visitor_obj.graph()
-    
+
+    if GRAPH_SYMTAB:
+        print "hola root",root
+        symtab_visitor_root=SymTabVisitor(root)
+        dot_visitor_obj = DotVisitor(symtab_visitor_root.get_symtab())
+        dot_visitor_obj.graph()
+
 
     

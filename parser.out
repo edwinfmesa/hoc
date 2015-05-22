@@ -18,8 +18,8 @@ Rule 12    asgn -> VAR MULEQ expr
 Rule 13    asgn -> VAR DIVEQ expr
 Rule 14    asgn -> VAR MODEQ expr
 Rule 15    stmt -> expr
-Rule 16    stmt -> RETURN
-Rule 17    stmt -> RETURN expr
+Rule 16    stmt -> RETURN expr
+Rule 17    stmt -> RETURN
 Rule 18    stmt -> PRINT prlist
 Rule 19    stmt -> WHILE LPARENT cond RPARENT stmt end
 Rule 20    stmt -> FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -142,7 +142,7 @@ data                 : 30
 defn                 : 3
 empty                : 1 27 70 73
 end                  : 19 20 21 22
-expr                 : 6 9 10 11 12 13 14 15 17 26 34 39 44 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 60 60 61 63 65 74 75
+expr                 : 6 9 10 11 12 13 14 15 16 26 34 39 44 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 60 60 61 63 65 74 75
 formals              : 67 68 72
 list                 : 2 3 4 5 6 7 8 0
 logicop              : 46
@@ -214,8 +214,8 @@ state 1
     (13) asgn -> . VAR DIVEQ expr
     (14) asgn -> . VAR MODEQ expr
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -318,8 +318,8 @@ state 2
 
 state 3
 
-    (16) stmt -> RETURN .
-    (17) stmt -> RETURN . expr
+    (16) stmt -> RETURN . expr
+    (17) stmt -> RETURN .
     (30) expr -> . data
     (31) expr -> . asgn
     (32) expr -> . unaryop
@@ -369,15 +369,15 @@ state 3
   ! shift/reduce conflict for DEC resolved as shift
   ! shift/reduce conflict for NOT resolved as shift
   ! shift/reduce conflict for BLTIN resolved as shift
-    RBRACKET        reduce using rule 16 (stmt -> RETURN .)
-    NEWLINE         reduce using rule 16 (stmt -> RETURN .)
-    RETURN          reduce using rule 16 (stmt -> RETURN .)
-    PRINT           reduce using rule 16 (stmt -> RETURN .)
-    WHILE           reduce using rule 16 (stmt -> RETURN .)
-    FOR             reduce using rule 16 (stmt -> RETURN .)
-    IF              reduce using rule 16 (stmt -> RETURN .)
-    LBRACKET        reduce using rule 16 (stmt -> RETURN .)
-    ELSE            reduce using rule 16 (stmt -> RETURN .)
+    RBRACKET        reduce using rule 17 (stmt -> RETURN .)
+    NEWLINE         reduce using rule 17 (stmt -> RETURN .)
+    RETURN          reduce using rule 17 (stmt -> RETURN .)
+    PRINT           reduce using rule 17 (stmt -> RETURN .)
+    WHILE           reduce using rule 17 (stmt -> RETURN .)
+    FOR             reduce using rule 17 (stmt -> RETURN .)
+    IF              reduce using rule 17 (stmt -> RETURN .)
+    LBRACKET        reduce using rule 17 (stmt -> RETURN .)
+    ELSE            reduce using rule 17 (stmt -> RETURN .)
     LPARENT         shift and go to state 11
     FLOAT           shift and go to state 26
     CONSTANT        shift and go to state 7
@@ -388,15 +388,15 @@ state 3
     NOT             shift and go to state 31
     BLTIN           shift and go to state 18
 
-  ! LPARENT         [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! FLOAT           [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! CONSTANT        [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! VAR             [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! UNARYMINUS      [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! INC             [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! DEC             [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! NOT             [ reduce using rule 16 (stmt -> RETURN .) ]
-  ! BLTIN           [ reduce using rule 16 (stmt -> RETURN .) ]
+  ! LPARENT         [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! FLOAT           [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! CONSTANT        [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! VAR             [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! UNARYMINUS      [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! INC             [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! DEC             [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! NOT             [ reduce using rule 17 (stmt -> RETURN .) ]
+  ! BLTIN           [ reduce using rule 17 (stmt -> RETURN .) ]
 
     unaryop                        shift and go to state 15
     expr                           shift and go to state 36
@@ -1387,7 +1387,7 @@ state 35
 
 state 36
 
-    (17) stmt -> RETURN expr .
+    (16) stmt -> RETURN expr .
     (47) mathop -> expr . EXP expr
     (48) mathop -> expr . PLUS expr
     (49) mathop -> expr . MINUS expr
@@ -1403,24 +1403,24 @@ state 36
     (59) logicop -> expr . OR expr
     (60) logicop -> expr . AND expr
 
-    RBRACKET        reduce using rule 17 (stmt -> RETURN expr .)
-    NEWLINE         reduce using rule 17 (stmt -> RETURN expr .)
-    RETURN          reduce using rule 17 (stmt -> RETURN expr .)
-    PRINT           reduce using rule 17 (stmt -> RETURN expr .)
-    WHILE           reduce using rule 17 (stmt -> RETURN expr .)
-    FOR             reduce using rule 17 (stmt -> RETURN expr .)
-    IF              reduce using rule 17 (stmt -> RETURN expr .)
-    LBRACKET        reduce using rule 17 (stmt -> RETURN expr .)
-    LPARENT         reduce using rule 17 (stmt -> RETURN expr .)
-    FLOAT           reduce using rule 17 (stmt -> RETURN expr .)
-    CONSTANT        reduce using rule 17 (stmt -> RETURN expr .)
-    VAR             reduce using rule 17 (stmt -> RETURN expr .)
-    UNARYMINUS      reduce using rule 17 (stmt -> RETURN expr .)
-    INC             reduce using rule 17 (stmt -> RETURN expr .)
-    DEC             reduce using rule 17 (stmt -> RETURN expr .)
-    NOT             reduce using rule 17 (stmt -> RETURN expr .)
-    BLTIN           reduce using rule 17 (stmt -> RETURN expr .)
-    ELSE            reduce using rule 17 (stmt -> RETURN expr .)
+    RBRACKET        reduce using rule 16 (stmt -> RETURN expr .)
+    NEWLINE         reduce using rule 16 (stmt -> RETURN expr .)
+    RETURN          reduce using rule 16 (stmt -> RETURN expr .)
+    PRINT           reduce using rule 16 (stmt -> RETURN expr .)
+    WHILE           reduce using rule 16 (stmt -> RETURN expr .)
+    FOR             reduce using rule 16 (stmt -> RETURN expr .)
+    IF              reduce using rule 16 (stmt -> RETURN expr .)
+    LBRACKET        reduce using rule 16 (stmt -> RETURN expr .)
+    LPARENT         reduce using rule 16 (stmt -> RETURN expr .)
+    FLOAT           reduce using rule 16 (stmt -> RETURN expr .)
+    CONSTANT        reduce using rule 16 (stmt -> RETURN expr .)
+    VAR             reduce using rule 16 (stmt -> RETURN expr .)
+    UNARYMINUS      reduce using rule 16 (stmt -> RETURN expr .)
+    INC             reduce using rule 16 (stmt -> RETURN expr .)
+    DEC             reduce using rule 16 (stmt -> RETURN expr .)
+    NOT             reduce using rule 16 (stmt -> RETURN expr .)
+    BLTIN           reduce using rule 16 (stmt -> RETURN expr .)
+    ELSE            reduce using rule 16 (stmt -> RETURN expr .)
     EXP             shift and go to state 73
     PLUS            shift and go to state 72
     MINUS           shift and go to state 75
@@ -1444,8 +1444,8 @@ state 37
     (29) stmtlist -> stmtlist . stmt
     (77) newline -> . NEWLINE
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -5469,8 +5469,8 @@ state 117
 
     (19) stmt -> WHILE LPARENT cond RPARENT . stmt end
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -5803,8 +5803,8 @@ state 128
     (21) stmt -> IF LPARENT cond RPARENT . stmt end
     (22) stmt -> IF LPARENT cond RPARENT . stmt ELSE stmt end
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -5971,8 +5971,8 @@ state 134
 
     (67) defn -> FUNC procname LPARENT formals RPARENT . stmt
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -6182,8 +6182,8 @@ state 138
 
     (68) defn -> PROC procname LPARENT formals RPARENT . stmt
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -6423,8 +6423,8 @@ state 145
 
     (22) stmt -> IF LPARENT cond RPARENT stmt ELSE . stmt end
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
@@ -6541,8 +6541,8 @@ state 149
 
     (20) stmt -> FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT . stmt end
     (15) stmt -> . expr
-    (16) stmt -> . RETURN
-    (17) stmt -> . RETURN expr
+    (16) stmt -> . RETURN expr
+    (17) stmt -> . RETURN
     (18) stmt -> . PRINT prlist
     (19) stmt -> . WHILE LPARENT cond RPARENT stmt end
     (20) stmt -> . FOR LPARENT cond SEMICOLON cond SEMICOLON cond RPARENT stmt end
