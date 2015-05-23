@@ -5,13 +5,14 @@ from utils import get_node_text
 
 class SymTab:
 
+
+
     def __init__(self, label, parent=None):
-        self.name = ""
+        self.name = label
         self.entries = {}
         self.parent = parent
-        if self.parent != None:
-            self.parent.children.append(self)
         self.children = []
+        self.errors = []
     
     def add(self, name, value): # agrego simbolo
         self.entries[name] = value
@@ -27,15 +28,11 @@ class SymTab:
 
 
 
-
-
 class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
 
     def __init__(self,node):
-        print "entro a symtabvisitor"
         self.id = 0
         self.current = SymTab('Program') 
-        print "Current",self.current
         self.visit(node)
         
 
@@ -46,10 +43,6 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
         dot_visitor_obj.graph()
         """
         return ans
-
-    def node_id(self):
-        self.id += 1
-        return "n%d" % self.id 
 
     def get_symtab(self):
         return self.current
@@ -77,8 +70,8 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
     def visit_FormalsList(self,node):
         for node in node.formallist:
             list_obj = self.visit(node)        
-            if list_obj.__class__.__name__ in ['Param']:
-                self.current.add(list_obj,node)
+            # if list_obj.__class__.__name__ in ['Param']:
+            #     self.current.add(list_obj,node)
 
     def visit_ArgList(self,node):
         for node in node.arglist:
@@ -97,8 +90,15 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
             self.visit(node.left)
 
     def visit_FuncDef(self,node):
-        self.current.add(node.function.value,node)
-        symbtab_func = SymTab(node.function,self.current)
+        function_name = node.function.value
+        if function_name in self.current.entries.keys():
+            error = "Error Semantico: No se puede definir dos funciones con el mismo nombre: "+function_name+""
+            print error
+            self.current.errors.append(error)
+
+        self.current.add(function_name,node)
+        # print "Function Name", node.function
+        symbtab_func = SymTab(node.function.value,self.current)
         self.current.children.append(symbtab_func)
         self.current = symbtab_func
 
@@ -108,8 +108,34 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
         self.current= symbtab_func.parent
 
     def visit_Calls(self,node):
-        function_id = self.visit(node.function)
-        arglist_id = self.visit(node.arglist)
+        has_function = False
+        function_name = node.function.value
+        if function_name in self.current.entries.keys():
+            has_function = True
+        p = self.current.parent
+        while p:
+            if function_name in self.current.parent.entries.keys():
+                has_function = True
+            p = p.parent 
+
+        
+        if not has_function:
+            error = "Error Semantico: No se puede llamar a una funcion que no esta definida: "+function_name+""
+            print error
+            self.current.errors.append(error)
+        else:
+            call_function = node
+            call_function_name = node.function.value
+            def_function = self.current.get(call_function_name)
+
+            if call_function.n_params != def_function.n_params:
+                error = "Error Semantico: No se puede llamar a una funcion con un numero de parametros diferentes al definido: "+function_name+""
+                print error
+                self.current.errors.append(error)
+                
+
+        self.visit(node.function)
+        self.visit(node.arglist)
         
 
     def visit_IfStatement(self,node):

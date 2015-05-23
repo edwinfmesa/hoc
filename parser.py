@@ -903,9 +903,8 @@ if __name__ == '__main__':
         dot_visitor_obj = DotVisitor(root)
         dot_visitor_obj.graph()
 
+    symtab_visitor_root=SymTabVisitor(root)
     if GRAPH_SYMTAB:
-        print "hola root",root
-        symtab_visitor_root=SymTabVisitor(root)
         dot_visitor_obj = DotVisitor(symtab_visitor_root.get_symtab())
         dot_visitor_obj.graph()
 

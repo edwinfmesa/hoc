@@ -1,11 +1,19 @@
 a=7
 func hola(b) { 
 	c = 3
+	a=4
 	print b, c
 }
-func abc(d,e,f){
+func mundo(d,e,f){
 	print d,e,f
 	return b
+	e=5
+	j=7
+	hola(b)
 }
-hola(5)
-abc(7,9)
+hola(5,2)
+mundo(7,9,8)
+
+
+
+
