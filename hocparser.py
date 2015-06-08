@@ -413,7 +413,15 @@ def p_unaryop_munit(p):
     print_state(p,cont,function_name)
     cont = cont + 1
     
-
+def p_unaryop_punit(p):
+    "unaryop : UNARYPLUS expr "
+    p[0]=p[1]
+    
+    global cont
+    function_name = inspect.stack()[0][3]
+    print_state(p,cont,function_name)
+    cont = cont + 1
+    
 
 def p_unaryop_inc(p):
     "unaryop : INC VAR"
@@ -872,7 +880,17 @@ precedence = (
 
 # ---------------------------parser----------------------------
 
+
+cont=0
+
 parser = yacc.yacc()
+
+
+
+def make_parser(data):    
+    root = yacc.parse(data+ "\n")
+    return root
+
 
 if __name__ == '__main__':
     

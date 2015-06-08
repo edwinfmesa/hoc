@@ -87,7 +87,8 @@ tokens = [
    'COMMA',
    'SEMICOLON',
    'NEWLINE',
-   'UNARYMINUS'
+   'UNARYMINUS',
+   'UNARYPLUS'
 ] 
 
 tokens += keywords.values() 
@@ -126,6 +127,7 @@ t_COMMA = r','
 t_SEMICOLON = r';'
 t_NEWLINE = r'\n'
 t_UNARYMINUS = r'\-'
+t_UNARYPLUS = r'\+'
 
 
 
