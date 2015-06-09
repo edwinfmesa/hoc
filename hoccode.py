@@ -21,16 +21,18 @@ class GenerateCode(NodeVisitor):
   
     def __init__(self):
         super(GenerateCode, self).__init__()
-        self.versions = defaultdict(int)
+        self.versions = defaultdict(int) 
         self.code = []
         self.start_block = self.code
         self.externs = []
 
+    # crea variables temporales
     def new_temp(self):
         name = "%s_%d" % ("float", self.versions['float'])
         self.versions['float'] += 1
         return name
 
+    # Visitantes para cada una de las definiciones de hoc
 
     def visit_Literal(self,node):
         target = self.new_temp()
@@ -43,6 +45,7 @@ class GenerateCode(NodeVisitor):
             opcode = binary_ops[node.op] + "_float"
         except:
             opcode = None
+
         self.visit(node.left)
         self.visit(node.right)
         
@@ -127,8 +130,9 @@ if __name__ == '__main__':
     print root.pprint()
     print "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
 
-    code = generate_code(root)
+    code_obj = generate_code(root)
 
     print '\n CODE \n'
-    pprint.pprint(code.code )
+    pprint.pprint(code_obj.code )
+    
     
