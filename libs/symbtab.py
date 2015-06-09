@@ -53,6 +53,7 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
 
     def visit_ProgList(self,node):
         for node in node.proglist:
+            # print node
             list_obj = self.visit(node)
             # if list_obj.__class__.__name__ == "FuncDef":
             #     self.current.children.append(list_obj)
@@ -86,8 +87,9 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
     # Varios ------------------------------------------------
 
     def visit_BinaryOp(self,node):
-        if node.op in ["=",'+=','-=','*=','/=','%=']:
+        if node.op in ["=",'+=','-=','*=','/=','%=','+','-','/','*']:
             self.visit(node.left)
+            self.visit(node.right)
 
     def visit_FuncDef(self,node):
         function_name = node.function.value
@@ -168,6 +170,7 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
         pass
 
     def visit_Literal(self,node):
+        # print "Value",node.value
         # label = node.value
         # node_id = self.node_id()
         # node_label = str(label)
@@ -183,6 +186,12 @@ class SymTabVisitor(NodeVisitor): # Se crea con el root del AST
 
 
     def visit_LoadVar(self,node):
+        # print "LoadVar",node.name
+        var = self.current.get(node.name)
+        if not var:
+            error = "Error Semantico: La variable  "+node.name+" no se encuentra definida"
+            print error
+            self.current.errors.append(error)
         # label = node.name
         # node_id = self.node_id()
         # node_label = "  LoadVar("+str(label)+")"

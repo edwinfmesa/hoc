@@ -79,7 +79,7 @@ class WhileStatement(AST):
     _fields = ['condition', 'body']
 
 class UnaryOp(AST):
-    _fields = ['op', 'left']
+    _fields = ['op', 'right']
 
 # class FunCall(AST):
 #     _fields = ['id', 'params']
@@ -114,9 +114,13 @@ class Literal(AST):
 class Program(AST):
     _fields = ['program']
 
+class Comment(AST):
+    _fields = ['comment']
 
 # Sin campos ------------------------------
 
 class Empty(AST):
     _fields = []
+
+
 

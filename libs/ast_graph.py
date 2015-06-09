@@ -60,7 +60,7 @@ class DotVisitor(NodeVisitor):
         self.dot.node(node_id, node_text)
 
         for node in node.proglist:
-            if not (node.__class__.__name__ == "Empty"):
+            if not (node.__class__.__name__ in ["Empty","Comment"]):
                 list_obj = self.visit(node)
                 self.dot.edge(node_id,list_obj)
         return node_id
@@ -217,6 +217,16 @@ class DotVisitor(NodeVisitor):
         self.dot.edge(node_id,value_id)
         self.dot.node(node_id, node_text)
         return node_id        
+
+    def visit_UnaryOp(self,node):
+        node_id=self.node_id()
+        node_label = "  UnaryOp ("+node.op+") "
+        node_text = get_node_text(node_id,node_label)
+
+        left_id = self.visit(node.right)
+        self.dot.edge(node_id,left_id)
+        self.dot.node(node_id, node_text)
+        return node_id
 
     # Hojas -----------------------------------------------
 

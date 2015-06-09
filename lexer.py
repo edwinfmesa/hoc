@@ -87,8 +87,8 @@ tokens = [
    'COMMA',
    'SEMICOLON',
    'NEWLINE',
-   'UNARYMINUS',
-   'UNARYPLUS'
+   # 'UNARYMINUS',
+   # 'UNARYPLUS'
 ] 
 
 tokens += keywords.values() 
@@ -126,8 +126,8 @@ t_RBRACKET = r'}'
 t_COMMA = r','
 t_SEMICOLON = r';'
 t_NEWLINE = r'\n'
-t_UNARYMINUS = r'\-'
-t_UNARYPLUS = r'\+'
+# t_UNARYMINUS = r'\-'
+# t_UNARYPLUS = r'\+'
 
 
 
@@ -184,7 +184,7 @@ def t_error_STRING(t):
     t.lexer.skip(1)
 
 def t_COMMENT(t):
-    r'[##].*\n'
+    r'[##].*'
     return t
 
 t_ignore = '\t \r'

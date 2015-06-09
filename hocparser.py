@@ -88,7 +88,7 @@ def p_list_error(p):
 
 def p_list_comment(p):
     "list : list COMMENT newline"
-    p[1].append(p[2])
+    p[1].append(Comment(p[2]))
     p[0]= p[1]
     
     global cont
@@ -351,7 +351,7 @@ def p_expr_binaryop(p):
 
 def p_expr_group(p):
     "expr : LPARENT expr RPARENT"
-    p[0]=p[1]
+    p[0]=p[2]
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -405,8 +405,8 @@ def p_data_VAR(p):
 
 
 def p_unaryop_munit(p):
-    "unaryop : UNARYMINUS expr "
-    p[0]=p[1]
+    "unaryop : MINUS expr "
+    p[0]=UnaryOp(p[1],p[2])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -414,8 +414,8 @@ def p_unaryop_munit(p):
     cont = cont + 1
     
 def p_unaryop_punit(p):
-    "unaryop : UNARYPLUS expr "
-    p[0]=p[1]
+    "unaryop : PLUS expr "
+    p[0]=UnaryOp(p[1],p[2])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -425,7 +425,7 @@ def p_unaryop_punit(p):
 
 def p_unaryop_inc(p):
     "unaryop : INC VAR"
-    p[0]=p[1]
+    p[0]=UnaryOp(p[1],p[2])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -435,7 +435,7 @@ def p_unaryop_inc(p):
 
 def p_unaryop_dec(p):
     "unaryop : DEC VAR"
-    p[0]=p[1]
+    p[0]=UnaryOp(p[1],p[2])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -445,7 +445,7 @@ def p_unaryop_dec(p):
 
 def p_unaryop_inc2(p):
     "unaryop : VAR INC"
-    p[0]=p[1]
+    p[0]=UnaryOp(p[2],p[1])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -455,7 +455,7 @@ def p_unaryop_inc2(p):
 
 def p_unaryop_dec2(p):
     "unaryop : VAR DEC"
-    p[0]=p[1]
+    p[0]=UnaryOp(p[2],p[1])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -464,7 +464,7 @@ def p_unaryop_dec2(p):
     
 def p_not_expr(p):
     "unaryop : NOT  expr"
-    p[0]=p[1]
+    p[0]=UnaryOp(p[1],p[2])
     
     global cont
     function_name = inspect.stack()[0][3]
@@ -867,7 +867,7 @@ precedence = (
     ('left', 'GT','GE','LT','LE','EQ','NE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE','MOD'),
-    ('right', 'UNARYMINUS','NOT','INC','DEC'),
+    ('right', 'NOT','INC','DEC'),
     ('left', 'EXP'),
     ('left', 'NEWLINE'),
     ('left','VAR'),

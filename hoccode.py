@@ -3,31 +3,27 @@ import libs.ply.yacc as yacc
 from collections import defaultdict
 import pprint 
 
+
+# Definicion de diccionarios
 binary_ops = {
     '+':'add',
     '-':'sub',
     '*':'mul',
     '/':'div',
 }
-
-
-
 unary_ops = {
     '+' : 'uadd',
     '-' : 'usub',
 }
 
-
+# Clase principal que hereda de NodeVisitor
 class GenerateCode(NodeVisitor):
   
     def __init__(self):
         super(GenerateCode, self).__init__()
-
         self.versions = defaultdict(int)
-
         self.code = []
         self.start_block = self.code
-
         self.externs = []
 
     def new_temp(self):
@@ -38,82 +34,66 @@ class GenerateCode(NodeVisitor):
 
     def visit_Literal(self,node):
         target = self.new_temp()
-
         inst = ('literal_float', node.value, target)
         self.code.append(inst)
-
         node.gen_location = target
 
     def visit_BinaryOp(self,node):
+        try:
+            opcode = binary_ops[node.op] + "_float"
+        except:
+            opcode = None
         self.visit(node.left)
         self.visit(node.right)
+        
+        if opcode:
+            target = self.new_temp()
+            inst = (opcode, node.left.gen_location, node.right.gen_location, target)
+            self.code.append(inst)
+            node.gen_location = target
 
-        target = self.new_temp()
-
-        opcode = binary_ops[node.op] + "_float"
-        inst = (opcode, node.left.gen_location, node.right.gen_location, target)
+        else:
+            opcode = "store_float"
+            inst = (opcode, node.right.gen_location, node.left.gen_location)
+            self.code.append(inst)
+    
+    def visit_PrList(self,node):
+        self.visit(node.prlist[0])
+        inst = ('print_float', node.prlist[0].gen_location)
         self.code.append(inst)
 
-        # Almacena localizacion del resultado en el nodo
-        node.gen_location = target
 
     def visit_StoreVar(self,node):
     	target = self.new_temp()
-    	node.gen_location = target
+        node.gen_location = target
+        inst = ('alloc_float', 
+                node.name)
+        self.code.append(inst)
+        inst = ('store_float',
+                node.gen_location,
+                node.name)
+        self.code.append(inst)
 
-    # def visit_PrintStatement(self,node):
-    #     # Visit la expresion print
-    #     self.visit(node.expr)
 
-    #     # Cree el opcode y agregarlo a la lista
-    #     inst = ('print_'+node.expr.type.name, node.expr.gen_location)
-    #     self.code.append(inst)
-
-  
-
-    # def visit_ConstDeclaration(self,node):
-    #     # localice en memoria
-    #     inst = ('alloc_'+node.type.name, 
-    #             node.id)
-    #     self.code.append(inst)
-    #     # almacene valor inicial
-    #     self.visit(node.value)
-    #     inst = ('store_'+node.type.name,
-    #             node.value.gen_location,
-    #             node.id)
-    #     self.code.append(inst)
-
-    # def visit_VarDeclaration(self,node):
-    #     # localice en memoria
-    #     inst = ('alloc_'+node.type.name, 
-    #             node.id)
-    #     self.code.append(inst)
-    #     # almacene pot. val inicial
-    #     if node.value:
-    #         self.visit(node.value)
-    #         inst = ('store_'+node.type.name,
-    #                 node.value.gen_location,
-    #                 node.id)
-    #         self.code.append(inst)
-
-    # def visit_LoadLocation(self,node):
-    #     target = self.new_temp(node.type)
-    #     inst = ('load_'+node.type.name,
-    #             node.name,
-    #             target)
-    #     self.code.append(inst)
-    #     node.gen_location = target
+    def visit_LoadVar(self,node):
+        target = self.new_temp()
+        inst = ('load_float',
+                node.name,
+                target)
+        self.code.append(inst)
+        node.gen_location = target
 
    
-    # def visit_UnaryOp(self,node):
-    #     self.visit(node.left)
-    #     target = self.new_temp(node.type)
-    #     opcode = unary_ops[node.op] + "_" + node.left.type.name
-    #     inst = (opcode, node.left.gen_location)
-    #     self.code.append(inst)
-    #     node.gen_location = target
+    def visit_UnaryOp(self,node):
+        self.visit(node.right)
+        target = self.new_temp()
+        node.gen_location = target
+        opcode = unary_ops[node.op] + "_float" 
+        inst = (opcode, node.right.gen_location,node.gen_location)
+        self.code.append(inst)
 
-   
+
+
 def generate_code(node):
     '''
     Genera codigo SSA desde el nodo AST entregado.
@@ -149,7 +129,6 @@ if __name__ == '__main__':
 
     code = generate_code(root)
 
-    # print 'CODE_OBJ \n', code 
     print '\n CODE \n'
     pprint.pprint(code.code )
     
